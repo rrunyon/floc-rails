@@ -112,9 +112,48 @@ module Espn
     end
 
     def insert_matchups
+      season_by_year = Season.all.index_by(&:year)
+
+      teams_by_year = Team.includes(:season).all.group_by { |team| team.season.year }
+      teams_by_year.each { |season, teams| teams_by_year[season] = teams.index_by(&:espn_id) }
+
+      weeks_by_year = Week.includes(:season).all.group_by { |week| week.season.year }
+      weeks_by_year.each { |season, weeks| weeks_by_year[season] = weeks.index_by(&:week) }
+
+      records = []
+
+      matchups_by_season.each do |season, matchups|
+        season_id = season_by_year[season].id
+        weeks = weeks_by_year[season]
+        teams = teams_by_year[season]
+
+        matchups.each do |matchup|
+          week_id = weeks[matchup[:matchupPeriodId]].id
+          home_team_id = teams[matchup[:home][:teamId].to_s].id
+
+          # Something not right here, one matchup contains only a home team
+          next if matchup[:away].blank?
+
+          away_team_id = teams[matchup[:away][:teamId].to_s].id
+
+          records << {
+            espn_raw: matchup,
+            week_id: week_id,
+            season_id: season_id,
+            home_team_id: home_team_id,
+            away_team_id: away_team_id,
+            home_score: matchup[:home][:totalPoints],
+            away_score: matchup[:away][:totalPoints],
+            playoff_tier_type: matchup[:playoffTierType]
+          }
+        end
+      end
+
+      Matchup.insert_all(records)
     end
 
     def matchups_by_season
+      data.each_with_object({}) { |season, result| result[season[:seasonId].to_s] = season[:schedule] }
     end
 
     def data 

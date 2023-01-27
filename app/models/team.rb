@@ -26,4 +26,11 @@
 class Team < ApplicationRecord
   belongs_to :user
   belongs_to :season
+
+  has_many :home
+  has_many :matchups
+
+  def matchups
+    Matchup.where("home_team_id = ? OR away_team_id = ?", id, id)
+  end
 end
