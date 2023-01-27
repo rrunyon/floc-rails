@@ -15,10 +15,10 @@ class CreateTables < ActiveRecord::Migration[7.0]
       t.jsonb :espn_raw, null: false
       t.string :espn_id, null: false
 
-      t.references :user, foreign_key: true
-      t.references :season
+      t.references :user, foreign_key: true, null: false
+      t.references :season, null: false
 
-      t.string :name
+      t.string :name, null: false
       t.string :avatar_url
 
       t.timestamps
@@ -59,10 +59,10 @@ class CreateTables < ActiveRecord::Migration[7.0]
     create_table :matchups do |t|
       t.jsonb :espn_raw, null: false
 
-      t.references :week, foreign_key: true
-      t.references :season, foreign_key: true
-      t.references :home_team, foreign_key: { to_table: :teams }
-      t.references :away_team, foreign_key: { to_table: :teams }
+      t.references :week, foreign_key: true, null: false
+      t.references :season, foreign_key: true, null: false
+      t.references :home_team, foreign_key: { to_table: :teams }, null: false
+      t.references :away_team, foreign_key: { to_table: :teams }, null: false
 
       t.decimal :home_score
       t.decimal :away_score

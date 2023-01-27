@@ -5,12 +5,12 @@
 #  id         :bigint           not null, primary key
 #  avatar_url :string
 #  espn_raw   :jsonb            not null
-#  name       :string
+#  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  espn_id    :string           not null
-#  season_id  :bigint
-#  user_id    :bigint
+#  season_id  :bigint           not null
+#  user_id    :bigint           not null
 #
 # Indexes
 #
@@ -25,4 +25,5 @@
 #
 class Team < ApplicationRecord
   belongs_to :user
+  belongs_to :season
 end
