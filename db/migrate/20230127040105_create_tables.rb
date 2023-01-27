@@ -15,7 +15,7 @@ class CreateTables < ActiveRecord::Migration[7.0]
       t.jsonb :espn_raw, null: false
       t.string :espn_id, null: false
 
-      t.references :user
+      t.references :user, foreign_key: true
       t.references :season
 
       t.string :name
@@ -40,12 +40,16 @@ class CreateTables < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
+    # Add this after both tables exist
+    add_foreign_key :teams, :seasons
+
     create_table :weeks do |t|
-      t.references :season, null: false
+      t.references :season, foreign_key: true, null: false
+      t.references :recap_author, foreign_key: { to_table: :teams }
+
       t.integer :week, null: false
       t.boolean :playoff, default: false, null: false
       t.text :recap
-      t.references :recap_author, foreign_key: { to_table: :teams }
 
       t.timestamps
     end
@@ -55,8 +59,8 @@ class CreateTables < ActiveRecord::Migration[7.0]
     create_table :matchups do |t|
       t.jsonb :espn_raw, null: false
 
-      t.references :week
-      t.references :season
+      t.references :week, foreign_key: true
+      t.references :season, foreign_key: true
       t.references :home_team, foreign_key: { to_table: :teams }
       t.references :away_team, foreign_key: { to_table: :teams }
 

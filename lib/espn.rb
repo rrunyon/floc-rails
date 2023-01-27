@@ -5,34 +5,67 @@ module Espn
     BASE_URL = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/831039?view=mTeam&view=mMatchupScore"
 
     def run
-      debugger
-
-      # upsert_members
-
-      puts data
+      insert_users
+      insert_seasons
+      insert_teams
     end
 
     private
 
-    def upsert_members
-      members.values.each { |member| insert_member(member) }
+    def insert_users
+      records = users.values.map do |member|
+        {
+          espn_raw: member,
+          espn_id: member[:id],
+          first_name: member[:firstName],
+          last_name: member[:lastName]
+        }
+      end
+
+      User.insert_all(records)
     end
 
-    def members
+    def users
       data
-        .flat_map { |o| o[:members] }
+        .flat_map { |s| s[:members] }
         .each_with_object({}) { |member, members| members[member[:id]] = member }
     end
 
-    def parse_member(raw_member)
+    def insert_seasons
+      records = seasons.map do |season|
+        {
+          year: season
+        }
+      end
 
+      Season.insert_all(records)
     end
 
     def seasons
-      data.map { |o| o[:seasonId] }
+      data.map { |s| s[:seasonId] }
+    end
+
+    def insert_teams
+      user_ids_by_espn_id = User.all.each_with_object({}) { |user, h| h[user.espn_id] = user.id }
+
+      debugger
+
+      records = teams.map do |team|
+        user_id = user_ids_by_espn_id[team[:primaryOwner]]
+        {
+          user_id: user_id,
+          espn_raw: team,
+          espn_id: team[:id],
+          name: team[:name],
+          avatar_url: team[:logo]
+        }
+      end
+
+      Team.insert_all(records)
     end
 
     def teams
+      data.map { |season| season[:teams] }.flatten
     end
 
     def data 

@@ -187,10 +187,10 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE public.weeks (
     id bigint NOT NULL,
     season_id bigint NOT NULL,
+    recap_author_id bigint,
     week integer NOT NULL,
     playoff boolean DEFAULT false NOT NULL,
     recap text,
-    recap_author_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -458,6 +458,38 @@ ALTER TABLE ONLY public.seasons
 
 
 --
+-- Name: weeks fk_rails_3999a6f8b3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weeks
+    ADD CONSTRAINT fk_rails_3999a6f8b3 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
+
+
+--
+-- Name: teams fk_rails_45096701b6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT fk_rails_45096701b6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: teams fk_rails_5fef1fc74c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT fk_rails_5fef1fc74c FOREIGN KEY (season_id) REFERENCES public.seasons(id);
+
+
+--
+-- Name: matchups fk_rails_991534a368; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matchups
+    ADD CONSTRAINT fk_rails_991534a368 FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
 -- Name: seasons fk_rails_b414668b36; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -471,6 +503,14 @@ ALTER TABLE ONLY public.seasons
 
 ALTER TABLE ONLY public.seasons
     ADD CONSTRAINT fk_rails_d2f322ea8c FOREIGN KEY (second_place_id) REFERENCES public.teams(id);
+
+
+--
+-- Name: matchups fk_rails_e4b507f1fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matchups
+    ADD CONSTRAINT fk_rails_e4b507f1fc FOREIGN KEY (season_id) REFERENCES public.seasons(id);
 
 
 --
