@@ -29,4 +29,6 @@
 #  fk_rails_...  (third_place_id => teams.id)
 #
 class Season < ApplicationRecord
+  has_many :weeks
+  has_many :teams
 end
