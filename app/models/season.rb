@@ -31,4 +31,9 @@
 class Season < ApplicationRecord
   has_many :weeks
   has_many :teams
+
+  belongs_to :first_place, class_name: 'Team', optional: true
+  belongs_to :second_place, class_name: 'Team', optional: true
+  belongs_to :third_place, class_name: 'Team', optional: true
+  belongs_to :last_place, class_name: 'Team', optional: true
 end

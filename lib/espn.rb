@@ -10,9 +10,52 @@ module Espn
       insert_teams
       insert_weeks
       insert_matchups
+      update_seasons_with_winners
     end
 
     private
+
+    # Look at the last two weeks of the season.
+    # First place is winner of the WINNERS_BRACKET matchup from the final week
+    # Second place is winner of the WINNERS_BRACKET matchup from the final week
+    # Third place is the only winner of a WINNERS_CONSOLATION_BRACKET from the final week
+    # that was the loser of a WINNERS_BRACKET matchup in the penultimate week
+    def update_seasons_with_winners
+      seasons = Season.includes(weeks: [:matchups])
+
+      seasons.each do |season|
+        penultimate_week, final_week = season.weeks.order(:week).last(2)
+
+        final_week_championship_matchup = final_week.matchups.find { |m| m.playoff_tier_type == 'WINNERS_BRACKET' }
+        if final_week_championship_matchup.home_score > final_week_championship_matchup.away_score
+          season.first_place = final_week_championship_matchup.home_team
+          season.second_place = final_week_championship_matchup.away_team
+        else
+          season.first_place = final_week_championship_matchup.away_team
+          season.second_place = final_week_championship_matchup.home_team
+        end
+
+        penultimate_week_winners_consolation_winners = Set.new
+        penultimate_week.matchups.select { |m| m.playoff_tier_type == 'WINNERS_BRACKET' }.each do |m|
+          if m.home_score > m.away_score
+            penultimate_week_winners_consolation_winners.add(m.away_team)
+          else
+            penultimate_week_winners_consolation_winners.add(m.home_team)
+          end
+        end
+
+        final_week_winners_consolation_matchups = final_week.matchups.select { |m| m.playoff_tier_type == 'WINNERS_CONSOLATION_LADDER' }
+        final_week_winners_consolation_matchups.each do |m|
+          if m.home_score > m.away_score && penultimate_week_winners_consolation_winners.include?(m.home_team)
+            season.third_place = m.home_team
+          elsif m.home_score < m.away_score && penultimate_week_winners_consolation_winners.include?(m.away_team)
+            season.third_place = m.away_team
+          end
+        end
+
+        season.save!
+      end
+    end
 
     def insert_users
       records = users.map do |member|

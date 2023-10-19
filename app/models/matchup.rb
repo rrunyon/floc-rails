@@ -34,4 +34,8 @@ class Matchup < ApplicationRecord
   belongs_to :season
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
+
+  PLAYOFF_TIER_TYPES = ["NONE", "WINNERS_BRACKET", "LOSERS_CONSOLATION_LADDER", "WINNERS_CONSOLATION_LADDER"]
+
+  scope :playoffs, -> { where.not(playoff_tier_type: "NONE") }
 end
