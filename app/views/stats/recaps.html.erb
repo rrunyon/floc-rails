@@ -1,0 +1,15 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Recaps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recaps.each do |member, weeks| %>
+      <tr>
+        <td><%= member %></td>
+        <td><%= weeks.size%></td>
+    <% end %>
+  </tbody>
+</table>

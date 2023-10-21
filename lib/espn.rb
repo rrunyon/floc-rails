@@ -58,26 +58,30 @@ module Espn
       end
     end
 
+    # TODO: Something still not right here, years with tiebreaks aren't working correctly
     def update_seasons_with_last_place
       data.each do |season|
-        last_place = nil
+        # If there is a tie here we need to tiebreak against lowest points scored, so collect all teams with the most 
+        # losses to start
+        teams = []
         most_losses = 0
 
         season[:teams].each do |team|
-          # If there is a tie here we need to tiebreak against lowest points scored
           losses = team[:record][:overall][:losses]
-          teams = []
+          points_for = team[:record][:overall][:pointsFor]
 
           if losses > most_losses
-            most_losses <= losses
-            teams = [team]
-            last_place = Team.find_by(espn_id: team[:id])
+            most_losses = losses
+            teams = [{ id: team[:id], points_for: }]
           elsif losses == most_losses
-
+            teams << { id: team[:id], points_for: }
           end
         end
 
-        Season.find_by(year: season[:seasonId]).update(last_place:)
+        last_place_id = teams.sort_by { |team| team[:points_for] }[0][:id]
+        season_record = Season.find_by(year: season[:seasonId])
+        last_place = Team.find_by(season: season_record, espn_id: last_place_id)
+        season_record.update(last_place:)
       end
     end
 

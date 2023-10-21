@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FlocRails</title>
+    <title>Football League of Champions</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <meta name="turbo-cache-control" content="no-cache">
+    <%= favicon_link_tag asset_path('favicon.gif') %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item">
+          <strong>Football League of Champions</strong>
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            Seasons
+          </a>
+
+          <%= link_to stats_path, class: "navbar-item" do %>
+            Stats
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
