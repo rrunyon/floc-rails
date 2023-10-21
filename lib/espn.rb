@@ -11,6 +11,7 @@ module Espn
       insert_weeks
       insert_matchups
       update_seasons_with_winners
+      update_seasons_with_last_place
     end
 
     private
@@ -54,6 +55,29 @@ module Espn
         end
 
         season.save!
+      end
+    end
+
+    def update_seasons_with_last_place
+      data.each do |season|
+        last_place = nil
+        most_losses = 0
+
+        season[:teams].each do |team|
+          # If there is a tie here we need to tiebreak against lowest points scored
+          losses = team[:record][:overall][:losses]
+          teams = []
+
+          if losses > most_losses
+            most_losses <= losses
+            teams = [team]
+            last_place = Team.find_by(espn_id: team[:id])
+          elsif losses == most_losses
+
+          end
+        end
+
+        Season.find_by(year: season[:seasonId]).update(last_place:)
       end
     end
 
