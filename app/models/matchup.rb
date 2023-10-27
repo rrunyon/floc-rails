@@ -38,4 +38,12 @@ class Matchup < ApplicationRecord
   PLAYOFF_TIER_TYPES = ["NONE", "WINNERS_BRACKET", "LOSERS_CONSOLATION_LADDER", "WINNERS_CONSOLATION_LADDER"]
 
   scope :playoffs, -> { where.not(playoff_tier_type: "NONE") }
+
+  def playoff?
+    !regular_season?
+  end
+
+  def regular_season?
+    playoff_tier_type == "NONE"
+  end
 end
