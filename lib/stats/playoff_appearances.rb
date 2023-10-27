@@ -15,15 +15,15 @@ module Stats
       end
 
       # Initialize total appearances by user
-      map[:total_appearances] = {}
+      map[:total] = {}
       User.all.each do |user|
-        map[:total_appearances][user.name] = 0
+        map[:total][user.name] = 0
       end
 
       # Compute total appearances by user
       Season.pluck(:year).each do |year|
         map[year].each do |user|
-          map[:total_appearances][user] += 1
+          map[:total][user] += 1
         end
       end
 

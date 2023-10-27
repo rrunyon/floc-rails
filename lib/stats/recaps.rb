@@ -26,8 +26,10 @@ module Stats
         end
 
         map[season][week.week] = min_team.user.name
-        map[min_team.user.name] ||= 0
-        map[min_team.user.name] += 1
+
+        map[:totals] ||= {}
+        map[:totals][min_team.user.name] ||= 0
+        map[:totals][min_team.user.name] += 1
       end
     end
   end
