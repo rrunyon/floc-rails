@@ -22,7 +22,7 @@ module Stats
         end
 
         map[min_team.user.name] ||= []
-        map[min_team.user.name] << week
+        map[min_team.user.name] << week.week
       end
     end
   end

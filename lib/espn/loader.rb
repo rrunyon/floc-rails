@@ -1,7 +1,7 @@
 require 'net/http'
 
 module Espn
-  class Parser
+  class Loader
     BASE_URL = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/831039?view=mTeam&view=mMatchupScore"
 
     def run
