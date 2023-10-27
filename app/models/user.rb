@@ -19,6 +19,6 @@ class User < ApplicationRecord
   has_many :teams
 
   def name
-    "#{first_name} #{last_name}"
+    [first_name, last_name].join(' ').titleize
   end
 end

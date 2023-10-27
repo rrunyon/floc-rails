@@ -9,7 +9,8 @@ module Stats
         recaps: Stats::Recaps.compute,
         team_names: Stats::TeamNames.compute,
         win_loss_matrix: Stats::WinLossMatrix.compute,
-        high_low_scores: Stats::HighLowScores.compute
+        high_low_scores: Stats::HighLowScores.compute,
+        playoff_appearances: Stats::PlayoffAppearances.compute
       }
     end
   end
