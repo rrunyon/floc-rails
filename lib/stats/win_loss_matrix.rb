@@ -19,9 +19,7 @@ module Stats
     def self.compute
       matchups = Matchup.includes(home_team: :user, away_team: :user).all
 
-      maps = { regular_season_map: {}, playoff_map: {} }
-
-      matchups.each do |matchup|
+      matchups.each_with_object({ regular_season_map: {}, playoff_map: {} }) do |matchup, maps|
         map = matchup.regular_season? ? maps[:regular_season_map] : maps[:playoff_map]
         home_user = matchup.home_team.user.name
         away_user = matchup.away_team.user.name
@@ -39,8 +37,6 @@ module Stats
           map[home_user][away_user][:loss] += 1
         end
       end
-
-      maps
     end
   end
 end

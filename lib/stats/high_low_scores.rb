@@ -17,9 +17,8 @@ module Stats
     #   }
     # }
     def self.compute
-      high_low_scores = Hash.new { |h, k| h[k] = [] }
       weeks = Week.where(playoff: false).includes(matchups: {home_team: :user, away_team: :user })
-      weeks.each do |week|
+      weeks.each_with_object({}) do |week, map|
         min_score = 1000
         max_score = 0
         min_team = nil
@@ -47,7 +46,7 @@ module Stats
           end
         end
 
-        high_low_scores[week.id] = {
+        map[week.id] = {
           low: {
             user: min_team.user.name,
             score: min_score
@@ -58,8 +57,6 @@ module Stats
           }
         }
       end
-
-      high_low_scores
     end
   end
 end

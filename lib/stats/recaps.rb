@@ -3,10 +3,9 @@ module Stats
 
     # Returns a hashmap of user id => recap count
     def self.compute
-      recap_counts = Hash.new { |h, k| h[k] = [] }
       weeks = Week.where(playoff: false).includes(matchups: { home_team: :user, away_team: :user })
 
-      weeks.each do |week|
+      weeks.each_with_object({}) do |week, map|
         min_score = 1000
         min_team = nil
 
@@ -22,10 +21,9 @@ module Stats
           end
         end
 
-        recap_counts[min_team.user.name] << week
+        map[min_team.user.name] ||= []
+        map[min_team.user.name] << week
       end
-
-      recap_counts
     end
   end
 end
