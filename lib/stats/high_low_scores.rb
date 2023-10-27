@@ -17,7 +17,7 @@ module Stats
     #   }
     # }
     def self.compute
-      weeks = Week.where(playoff: false).includes(matchups: {home_team: :user, away_team: :user })
+      weeks = Week.where(playoff: false).includes(:season, matchups: {home_team: :user, away_team: :user })
       weeks.each_with_object({}) do |week, map|
         min_score = 1000
         max_score = 0
@@ -46,7 +46,8 @@ module Stats
           end
         end
 
-        map[week.id] = {
+        map[week.season.year] ||= {}
+        map[week.season.year][week.week] = {
           low: {
             user: min_team.user.name,
             score: min_score

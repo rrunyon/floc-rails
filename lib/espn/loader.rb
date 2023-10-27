@@ -18,7 +18,7 @@ module Espn
 
     # Look at the last two weeks of the season.
     # First place is winner of the WINNERS_BRACKET matchup from the final week
-    # Second place is winner of the WINNERS_BRACKET matchup from the final week
+    # Second place is loser of the WINNERS_BRACKET matchup from the final week
     # Third place is the only winner of a WINNERS_CONSOLATION_BRACKET from the final week
     # that was the loser of a WINNERS_BRACKET matchup in the penultimate week
     def update_seasons_with_winners
