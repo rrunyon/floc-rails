@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :stats, only: [:index] do
     collection do
       get :recaps
+      get :head_to_head
     end
   end
 end

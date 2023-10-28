@@ -1,15 +1,23 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Member</th>
-      <th>Recaps</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @recaps.each do |member, weeks| %>
-      <tr>
-        <td><%= member %></td>
-        <td><%= weeks.size%></td>
-    <% end %>
-  </tbody>
-</table>
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Recaps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recaps.each do |member, weeks| %>
+          <tr>
+            <td><%= member %></td>
+            <td><%= weeks.size%></td>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
