@@ -4,6 +4,33 @@
   </div>
 
   <div class="column is-four-fifths">
-    head to head
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <% @sorted_users.each do |user| %>
+            <th><%= user.short_name %></th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+      </tbody>
+      <% @sorted_users.each do |user_a| %>
+        <tr>
+          <th><%= user_a.short_name %></th>
+
+          <% @sorted_users.each do |user_b| %>
+            <td>
+              <% if user_a != user_b %>
+                <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :win) || 0 %> - <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :loss) || 0 %>
+              <% else %>
+                --
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>

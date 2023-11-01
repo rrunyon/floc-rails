@@ -21,4 +21,8 @@ class User < ApplicationRecord
   def name
     [first_name, last_name].join(' ').titleize
   end
+
+  def short_name
+    [first_name, last_name[0]].join(' ').titleize
+  end
 end
