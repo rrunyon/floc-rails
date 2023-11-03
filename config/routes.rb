@@ -6,8 +6,9 @@ Rails.application.routes.draw do
 
   resources :stats, only: [:index] do
     collection do
-      get :recaps
       get :head_to_head
+      get :recaps
+      get :team_names
     end
   end
 end

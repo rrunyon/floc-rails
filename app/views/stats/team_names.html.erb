@@ -1,0 +1,37 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <% @team_names.sort.each_slice(3) do |slice| %>
+      <div class="columns">
+        <% slice.each do |team| %>
+          <div class="column is-one-third">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Season</th>
+                  <th><%= team[0] %></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% team[1].each do |season, name| %>
+                  <tr>
+                    <td>
+                      <%= season %>
+                    </td>
+                    <td>
+                      <%= name %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

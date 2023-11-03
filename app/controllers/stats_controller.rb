@@ -13,4 +13,8 @@ class StatsController < ApplicationController
   def recaps
     @recaps = Stats::Recaps.compute
   end
+
+  def team_names
+    @team_names = Stats::TeamNames.compute
+  end
 end

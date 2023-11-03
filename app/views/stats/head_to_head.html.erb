@@ -15,22 +15,22 @@
       </thead>
 
       <tbody>
-      </tbody>
-      <% @sorted_users.each do |user_a| %>
-        <tr>
-          <th><%= user_a.short_name %></th>
+        <% @sorted_users.each do |user_a| %>
+          <tr>
+            <th><%= user_a.short_name %></th>
 
-          <% @sorted_users.each do |user_b| %>
-            <td>
-              <% if user_a != user_b %>
-                <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :win) || 0 %> - <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :loss) || 0 %>
-              <% else %>
-                --
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
+            <% @sorted_users.each do |user_b| %>
+              <td>
+                <% if user_a != user_b %>
+                  <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :loss) || 0 %> - <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :win) || 0 %>
+                <% else %>
+                  --
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
   </div>
 </div>
