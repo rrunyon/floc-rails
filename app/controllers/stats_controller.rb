@@ -17,4 +17,8 @@ class StatsController < ApplicationController
   def team_names
     @team_names = Stats::TeamNames.compute
   end
+
+  def high_low_scores
+    @high_low_scores = Stats::HighLowScores.compute
+  end
 end

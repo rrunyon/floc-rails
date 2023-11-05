@@ -4,18 +4,56 @@
   </div>
 
   <div class="column is-four-fifths">
+    <% @recaps[:seasons].each do |season, weeks| %>
+      <div class="title">
+        <%= season %>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Player</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% weeks.each do |week, player| %>
+            <tr>
+              <td>
+                <%= week %>
+              </td>
+              <td>
+                <%= player %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <div class="title">
+      Totals
+    </div>
+
     <table class="table">
       <thead>
         <tr>
-          <th>Member</th>
-          <th>Recaps</th>
+          <th>Player</th>
+          <th>Count</th>
         </tr>
       </thead>
+
       <tbody>
-        <% @recaps.each do |member, weeks| %>
+        <% @recaps[:totals].each do |player, count| %>
           <tr>
-            <td><%= member %></td>
-            <td><%= weeks.size%></td>
+            <td>
+              <%= player %>
+            </td>
+            <td>
+              <%= count %>
+            </td>
+          </tr>
         <% end %>
       </tbody>
     </table>

@@ -8,7 +8,8 @@ module Stats
       weeks.each_with_object({}) do |week, map|
         season = week.season.year
 
-        map[season] ||= {}
+        map[:seasons] ||= {}
+        map[:seasons][season] ||= {}
 
         min_score = 1000
         min_team = nil
@@ -25,7 +26,7 @@ module Stats
           end
         end
 
-        map[season][week.week] = min_team.user.name
+        map[:seasons][season][week.week] = min_team.user.name
 
         map[:totals] ||= {}
         map[:totals][min_team.user.name] ||= 0

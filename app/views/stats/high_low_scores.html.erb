@@ -1,0 +1,81 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <% @high_low_scores.sort.each do |season, weeks| %>
+      <div class="columns is-centered">
+        <div class="column is-narrow title">
+          <%= season %>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-one-half">
+          <div class="subtitle">
+            High Scorers
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Team</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% weeks.each do |week, stats| %>
+                <tr>
+                  <td>
+                    <%= week %>
+                  </td>
+                  <td>
+                    <%= stats[:high][:user] %>
+                  </td>
+                  <td>
+                    <%= stats[:high][:score] %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="column is-one-half">
+          <div class="subtitle">
+            Low Scorers
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Team</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% weeks.each do |week, stats| %>
+                <tr>
+                  <td>
+                    <%= week %>
+                  </td>
+                  <td>
+                    <%= stats[:low][:user] %>
+                  </td>
+                  <td>
+                    <%= stats[:low][:score] %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

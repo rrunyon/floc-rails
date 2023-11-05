@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get :head_to_head
       get :recaps
       get :team_names
+      get :high_low_scores
     end
   end
 end
