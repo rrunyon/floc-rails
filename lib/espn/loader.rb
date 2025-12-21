@@ -2,7 +2,8 @@ require 'net/http'
 
 module Espn
   class Loader
-    BASE_URL = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/831039?view=mTeam&view=mMatchupScore"
+    # ESPN moved fantasy data to the lm-api-reads host
+    BASE_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/leagueHistory/831039?view=mTeam&view=mMatchupScore"
 
     def run
       insert_users
@@ -95,7 +96,7 @@ module Espn
         }
       end
 
-      User.insert_all(records)
+      User.insert_all(records, unique_by: :espn_id)
     end
 
     def users
@@ -243,7 +244,16 @@ module Espn
     # "status",
     # "teams"
     def fetch_json!
-      Net::HTTP.get(URI(BASE_URL))
+      uri = URI(BASE_URL)
+      espn_s2 = ENV["ESPN_S2"] or raise "ESPN_S2 env var required"
+      swid = ENV["SWID"] or raise "SWID env var required"
+
+      request = Net::HTTP::Get.new(uri)
+      request["Cookie"] = "espn_s2=#{espn_s2}; SWID=#{swid}"
+
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
+        http.request(request).body
+      end
     end
   end
 end

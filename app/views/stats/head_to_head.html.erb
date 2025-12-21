@@ -4,6 +4,21 @@
   </div>
 
   <div class="column is-four-fifths">
+    <div class="tabs is-toggle">
+      <ul>
+        <li class="<%= @season_filter == 'regular' ? 'is-active' : '' %>">
+          <%= link_to "Regular", head_to_head_stats_path(season: "regular") %>
+        </li>
+        <li class="<%= @season_filter == 'playoffs' ? 'is-active' : '' %>">
+          <%= link_to "Playoffs", head_to_head_stats_path(season: "playoffs") %>
+        </li>
+        <li class="<%= @season_filter == 'mixed' ? 'is-active' : '' %>">
+          <%= link_to "Mixed", head_to_head_stats_path(season: "mixed") %>
+        </li>
+      </ul>
+    </div>
+
+    <% dataset = { "regular" => :regular_season, "playoffs" => :playoffs, "mixed" => :mixed }[@season_filter] %>
     <table class="table">
       <thead>
         <tr>
@@ -22,7 +37,7 @@
             <% @sorted_users.each do |user_b| %>
               <td>
                 <% if user_a != user_b %>
-                  <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :loss) || 0 %> - <%= @head_to_head.dig(:regular_season, user_a.name, user_b.name, :win) || 0 %>
+                  <%= @head_to_head.dig(dataset, user_a.name, user_b.name, :loss) || 0 %> - <%= @head_to_head.dig(dataset, user_a.name, user_b.name, :win) || 0 %>
                 <% else %>
                   --
                 <% end %>
