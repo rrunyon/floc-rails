@@ -280,6 +280,11 @@ fieldset[disabled] .pagination-ellipsis {
   width: 160px;
   height: 160px;
   object-fit: contain;
+  max-height: none;
+}
+
+.navbar .navbar-item img {
+  max-height: none;
 }
 
 .brand-title {
