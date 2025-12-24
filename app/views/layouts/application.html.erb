@@ -15,14 +15,16 @@
 
   <body>
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <strong>Football League of Champions</strong>
-        </a>
-      </div>
-
-      <div class="navbar-menu">
-        <div class="navbar-start">
+      <div class="container">
+        <div class="navbar-brand">
+          <%= link_to root_path, class: "navbar-item brand-mark" do %>
+            <span class="brand-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+                <path d="M22 8h20v8h10v8c0 9-7 16-16 16h-8c-9 0-16-7-16-16v-8h10V8zm-6 8h-6v8c0 8 6 14 14 14h4v-6h-4c-6 0-8-4-8-8v-8zm32 0h6v8c0 8-6 14-14 14h-4v-6h4c6 0 8-4 8-8v-8zM26 44h12v6h6v6H20v-6h6v-6z" fill="currentColor"/>
+              </svg>
+            </span>
+            <strong class="brand-title">Football League of Champions</strong>
+          <% end %>
         </div>
       </div>
     </nav>

@@ -265,6 +265,34 @@ fieldset[disabled] .pagination-ellipsis {
   color: #363636;
 }
 
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-left: 0;
+}
+
+.brand-icon {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd66b, #f3a712);
+  color: #3b2f12;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.brand-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.brand-title {
+  letter-spacing: 0.02em;
+}
+
 .image.is-square img,
 .image.is-square .has-ratio, .image.is-1by1 img,
 .image.is-1by1 .has-ratio, .image.is-5by4 img,
