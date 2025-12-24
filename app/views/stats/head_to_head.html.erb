@@ -12,32 +12,35 @@
         <li class="<%= @season_filter == 'playoffs' ? 'is-active' : '' %>">
           <%= link_to "Playoffs", head_to_head_stats_path(season: "playoffs") %>
         </li>
-        <li class="<%= @season_filter == 'mixed' ? 'is-active' : '' %>">
-          <%= link_to "Mixed", head_to_head_stats_path(season: "mixed") %>
+        <li class="<%= @season_filter == 'consolation' ? 'is-active' : '' %>">
+          <%= link_to "Consolation Ladder", head_to_head_stats_path(season: "consolation") %>
+        </li>
+        <li class="<%= @season_filter == 'all' ? 'is-active' : '' %>">
+          <%= link_to "All", head_to_head_stats_path(season: "all") %>
         </li>
       </ul>
     </div>
 
-    <% dataset = { "regular" => :regular_season, "playoffs" => :playoffs, "mixed" => :mixed }[@season_filter] %>
-    <table class="table">
+    <% dataset = { "regular" => :regular_season, "playoffs" => :playoffs, "consolation" => :consolation, "all" => :mixed }[@season_filter] %>
+    <table class="table is-hoverable" data-controller="head-to-head-table" data-action="pointerover->head-to-head-table#hover pointerout->head-to-head-table#clear">
       <thead>
         <tr>
           <th></th>
-          <% @sorted_users.each do |user| %>
-            <th><%= user.short_name %></th>
+          <% @sorted_users.each_with_index do |user, col_index| %>
+            <th data-col="<%= col_index %>"><%= user.short_name %></th>
           <% end %>
         </tr>
       </thead>
 
       <tbody>
-        <% @sorted_users.each do |user_a| %>
+        <% @sorted_users.each_with_index do |user_b, row_index| %>
           <tr>
-            <th><%= user_a.short_name %></th>
+            <th data-row="<%= row_index %>"><%= user_b.short_name %></th>
 
-            <% @sorted_users.each do |user_b| %>
-              <td>
+            <% @sorted_users.each_with_index do |user_a, col_index| %>
+              <td data-row="<%= row_index %>" data-col="<%= col_index %>">
                 <% if user_a != user_b %>
-                  <%= @head_to_head.dig(dataset, user_a.name, user_b.name, :loss) || 0 %> - <%= @head_to_head.dig(dataset, user_a.name, user_b.name, :win) || 0 %>
+                  <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :loss) || 0 %> - <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :win) || 0 %>
                 <% else %>
                   --
                 <% end %>

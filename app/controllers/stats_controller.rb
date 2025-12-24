@@ -8,7 +8,7 @@ class StatsController < ApplicationController
   def head_to_head
     @head_to_head = Stats::WinLossMatrix.compute
     @season_filter = params[:season]
-    unless @season_filter.in?(%w[regular playoffs mixed])
+    unless @season_filter.in?(%w[regular playoffs all consolation])
       @season_filter = "regular"
     end
     @sorted_users = User.all.sort_by(&:name)
