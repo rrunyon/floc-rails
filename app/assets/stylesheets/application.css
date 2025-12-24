@@ -293,6 +293,17 @@ fieldset[disabled] .pagination-ellipsis {
   padding: 0.5rem 0;
 }
 
+.navbar.is-light {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.menu {
+  position: sticky;
+  top: 100px;
+}
+
 .image.is-square img,
 .image.is-square .has-ratio, .image.is-1by1 img,
 .image.is-1by1 .has-ratio, .image.is-5by4 img,
