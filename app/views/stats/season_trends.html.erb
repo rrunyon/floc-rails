@@ -1,0 +1,141 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <div class="title">Season Trends</div>
+
+    <%= form_with url: season_trends_stats_path, method: :get, local: true do %>
+      <div class="columns is-vcentered">
+        <div class="column is-one-quarter">
+          <div class="field">
+            <label class="label">Player</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <%= select_tag :user, options_for_select(@season_trends.keys.sort, @season_filter_user), include_blank: "All", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="field">
+            <label class="label">From Season</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <%= select_tag :from, options_for_select(@season_years, @season_filter_from), include_blank: "Any", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="field">
+            <label class="label">To Season</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <%= select_tag :to, options_for_select(@season_years, @season_filter_to), include_blank: "Any", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="title">Placements & Records</div>
+    <div class="columns is-multiline">
+      <% @season_trends_filtered.sort.each do |player, stats| %>
+        <% placements = stats[:placements] || { first: 0, second: 0, third: 0, last: 0 } %>
+        <div class="column is-one-third">
+          <div class="box">
+            <div class="subtitle"><%= player %></div>
+            <div class="content">
+              <p><strong>Record:</strong> <%= stats[:totals][:wins] %>-<%= stats[:totals][:losses] %></p>
+              <p><strong>Placements:</strong></p>
+              <p>1st: <%= placements[:first] %> | 2nd: <%= placements[:second] %> | 3rd: <%= placements[:third] %> | Last: <%= placements[:last] %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <table class="table is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Season</th>
+          <th>Record</th>
+          <th>PF</th>
+          <th>PA</th>
+          <th>PF/G</th>
+          <th>PA/G</th>
+          <th>Score Std Dev</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @season_trends_filtered.empty? %>
+          <tr>
+            <td colspan="8">No seasons match the selected filters.</td>
+          </tr>
+        <% end %>
+        <% @season_trends_filtered.sort.each do |player, stats| %>
+          <% stats[:seasons].sort.each do |season, season_stats| %>
+            <tr>
+              <td><%= player %></td>
+              <td><%= season %></td>
+              <td><%= season_stats[:wins] %>-<%= season_stats[:losses] %></td>
+              <td><%= number_with_precision(season_stats[:points_for], precision: 2) %></td>
+              <td><%= number_with_precision(season_stats[:points_against], precision: 2) %></td>
+              <td>
+                <span class="mini-bar">
+                  <span class="mini-bar__fill mini-bar__fill--positive" style="width: <%= @season_trends_max_pf.positive? ? (season_stats[:points_for_per_game] / @season_trends_max_pf * 100).round(1) : 0 %>%"></span>
+                </span>
+                <span class="mini-bar__value"><%= number_with_precision(season_stats[:points_for_per_game], precision: 2) %></span>
+              </td>
+              <td>
+                <span class="mini-bar">
+                  <span class="mini-bar__fill mini-bar__fill--negative" style="width: <%= @season_trends_max_pa.positive? ? (season_stats[:points_against_per_game] / @season_trends_max_pa * 100).round(1) : 0 %>%"></span>
+                </span>
+                <span class="mini-bar__value"><%= number_with_precision(season_stats[:points_against_per_game], precision: 2) %></span>
+              </td>
+              <td>
+                <span class="mini-bar">
+                  <span class="mini-bar__fill" style="width: <%= @season_trends_max_stddev.positive? ? (season_stats[:score_stddev] / @season_trends_max_stddev * 100).round(1) : 0 %>%"></span>
+                </span>
+                <span class="mini-bar__value"><%= number_with_precision(season_stats[:score_stddev], precision: 2) %></span>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="title">All-Time Averages</div>
+    <table class="table is-striped">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>PF/G</th>
+          <th>PA/G</th>
+          <th>Wins</th>
+          <th>Losses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @season_trends_filtered.empty? %>
+          <tr>
+            <td colspan="5">No seasons match the selected filters.</td>
+          </tr>
+        <% end %>
+        <% @season_trends_filtered.sort.each do |player, stats| %>
+          <tr>
+            <td><%= player %></td>
+            <td><%= number_with_precision(stats[:averages][:points_for_per_game], precision: 2) %></td>
+            <td><%= number_with_precision(stats[:averages][:points_against_per_game], precision: 2) %></td>
+            <td><%= stats[:totals][:wins] %></td>
+            <td><%= stats[:totals][:losses] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

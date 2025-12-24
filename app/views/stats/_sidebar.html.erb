@@ -1,5 +1,8 @@
 <aside class="menu">
   <ul class="menu-list">
+    <li data-link="overview">
+      <%= render partial: "sidebar_tab", locals: { label: "Overview", path: overview_stats_path } %>
+    </li>
     <li data-link="head-to-head">
       <%= render partial: "sidebar_tab", locals: { label: "Head to Head", path: head_to_head_stats_path } %>
     </li>
@@ -11,6 +14,15 @@
     </li>
     <li data-link="high-low-scores">
       <%= render partial: "sidebar_tab", locals: { label: "Weekly High/Low Scorers", path: high_low_scores_stats_path } %>
+    </li>
+    <li data-link="season-trends">
+      <%= render partial: "sidebar_tab", locals: { label: "Season Trends", path: season_trends_stats_path } %>
+    </li>
+    <li data-link="rivalries">
+      <%= render partial: "sidebar_tab", locals: { label: "Rivalries & Records", path: rivalries_stats_path } %>
+    </li>
+    <li data-link="transactions">
+      <%= render partial: "sidebar_tab", locals: { label: "Transactions Activity", path: transactions_stats_path } %>
     </li>
   </ul>
 </aside>

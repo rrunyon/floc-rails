@@ -1,0 +1,116 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <div class="title">Transactions Activity</div>
+
+    <div class="subtitle">All-Time Leaderboard</div>
+    <table class="table is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Total Acquisitions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions[:users].sort_by { |_, stats| -stats[:total] }.each do |player, stats| %>
+          <tr>
+            <td><%= player %></td>
+            <td>
+              <span class="mini-bar">
+                <span class="mini-bar__fill mini-bar__fill--accent" style="width: <%= @transactions_max_total.positive? ? (stats[:total].to_f / @transactions_max_total * 100).round(1) : 0 %>%"></span>
+              </span>
+              <span class="mini-bar__value"><%= stats[:total] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="subtitle">Per-Season Activity</div>
+    <table class="table is-striped">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Season</th>
+          <th>Acquisitions</th>
+          <th>Moves/Game</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions[:users].sort.each do |player, stats| %>
+          <% stats[:seasons].sort.each do |season, season_stats| %>
+            <tr>
+              <td><%= player %></td>
+              <td><%= season %></td>
+              <td>
+                <span class="mini-bar">
+                  <span class="mini-bar__fill mini-bar__fill--accent" style="width: <%= @transactions_max_season.positive? ? (season_stats[:acquisitions].to_f / @transactions_max_season * 100).round(1) : 0 %>%"></span>
+                </span>
+                <span class="mini-bar__value"><%= season_stats[:acquisitions] %></span>
+              </td>
+              <td>
+                <span class="mini-bar">
+                  <span class="mini-bar__fill mini-bar__fill--positive" style="width: <%= @transactions_max_per_game.positive? ? (season_stats[:per_game] / @transactions_max_per_game * 100).round(1) : 0 %>%"></span>
+                </span>
+                <span class="mini-bar__value"><%= number_with_precision(season_stats[:per_game], precision: 2) %></span>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="subtitle">Most Active Seasons</div>
+    <table class="table is-striped">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Season</th>
+          <th>Acquisitions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions[:top_seasons].each do |season| %>
+          <tr>
+            <td><%= season[:user] %></td>
+            <td><%= season[:season] %></td>
+            <td>
+              <span class="mini-bar">
+                <span class="mini-bar__fill mini-bar__fill--accent" style="width: <%= @transactions_max_season.positive? ? (season[:acquisitions].to_f / @transactions_max_season * 100).round(1) : 0 %>%"></span>
+              </span>
+              <span class="mini-bar__value"><%= season[:acquisitions] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="subtitle">League Averages</div>
+    <table class="table is-striped">
+      <thead>
+        <tr>
+          <th>Season</th>
+          <th>Total Acquisitions</th>
+          <th>Moves/Game</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions[:season_averages].sort.each do |season, averages| %>
+          <tr>
+            <td><%= season %></td>
+            <td><%= averages[:total] %></td>
+            <td>
+              <span class="mini-bar">
+                <span class="mini-bar__fill" style="width: <%= @transactions_max_avg_per_game.positive? ? (averages[:per_game] / @transactions_max_avg_per_game * 100).round(1) : 0 %>%"></span>
+              </span>
+              <span class="mini-bar__value"><%= number_with_precision(averages[:per_game], precision: 2) %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -210,6 +210,61 @@ fieldset[disabled] .pagination-ellipsis {
   width: 1em;
 }
 
+.mini-bar {
+  display: inline-block;
+  width: 90px;
+  height: 8px;
+  background: #e6e6e6;
+  border-radius: 999px;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.mini-bar__fill {
+  display: block;
+  height: 100%;
+  background: #b5b5b5;
+}
+
+.mini-bar__fill--positive {
+  background: #48c774;
+}
+
+.mini-bar__fill--negative {
+  background: #f14668;
+}
+
+.mini-bar__fill--accent {
+  background: #3273dc;
+}
+
+.mini-bar__value {
+  vertical-align: middle;
+  font-size: 0.85em;
+  color: #4a4a4a;
+}
+
+.sortable-table th[data-sort-index] {
+  cursor: pointer;
+}
+
+.sortable-table th[data-sort-direction="asc"]::after {
+  content: " ▲";
+  font-size: 0.75em;
+  color: #7a7a7a;
+}
+
+.sortable-table th[data-sort-direction="desc"]::after {
+  content: " ▼";
+  font-size: 0.75em;
+  color: #7a7a7a;
+}
+
+.notification.is-light strong {
+  color: #363636;
+}
+
 .image.is-square img,
 .image.is-square .has-ratio, .image.is-1by1 img,
 .image.is-1by1 .has-ratio, .image.is-5by4 img,

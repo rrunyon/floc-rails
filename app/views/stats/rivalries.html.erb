@@ -1,0 +1,118 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <div class="title">Rivalries & Records</div>
+
+    <div class="tabs is-toggle">
+      <ul>
+        <li class="<%= @season_filter == 'regular' ? 'is-active' : '' %>">
+          <%= link_to "Regular", rivalries_stats_path(season: "regular") %>
+        </li>
+        <li class="<%= @season_filter == 'playoffs' ? 'is-active' : '' %>">
+          <%= link_to "Playoffs", rivalries_stats_path(season: "playoffs") %>
+        </li>
+        <li class="<%= @season_filter == 'all' ? 'is-active' : '' %>">
+          <%= link_to "All", rivalries_stats_path(season: "all") %>
+        </li>
+      </ul>
+    </div>
+
+    <div class="subtitle">Top Rivalries</div>
+    <table class="table is-striped is-hoverable sortable-table" data-controller="sortable-table" data-sortable-table-default-index-value="1" data-sortable-table-default-direction-value="desc">
+      <thead>
+        <tr>
+          <th data-action="click->sortable-table#sort" data-sort-index="0" data-sort-type="text">Matchup</th>
+          <th data-action="click->sortable-table#sort" data-sort-index="1" data-sort-type="number">Games</th>
+          <th data-action="click->sortable-table#sort" data-sort-index="2" data-sort-type="text">Record</th>
+          <th data-action="click->sortable-table#sort" data-sort-index="3" data-sort-type="number">Win %</th>
+          <th data-action="click->sortable-table#sort" data-sort-index="4" data-sort-type="number">Avg Margin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @rivalries[:top_rivalries].each do |rivalry| %>
+          <% user_a, user_b = rivalry[:users] %>
+          <tr>
+            <td><%= rivalry[:key] %></td>
+            <td><%= rivalry[:games] %></td>
+            <td><%= rivalry[:wins][user_a] %>-<%= rivalry[:wins][user_b] %></td>
+            <td>
+              <span data-sort-value="<%= (rivalry[:win_pct][user_a] * 100).round(1) %>">
+                <%= user_a %> <%= number_with_precision(rivalry[:win_pct][user_a] * 100, precision: 1) %>%
+                vs
+                <%= user_b %> <%= number_with_precision(rivalry[:win_pct][user_b] * 100, precision: 1) %>%
+              </span>
+            </td>
+            <td><%= number_with_precision(rivalry[:avg_margin], precision: 2) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="subtitle">Records</div>
+    <table class="table is-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Winner</th>
+          <th>Loser</th>
+          <th>Margin</th>
+          <th>Season</th>
+          <th>Week</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @rivalries[:records][:biggest_blowout] %>
+          <% record = @rivalries[:records][:biggest_blowout] %>
+          <tr>
+            <td>Biggest Blowout</td>
+            <td><%= record[:winner] %></td>
+            <td><%= record[:loser] %></td>
+            <td><%= number_with_precision(record[:margin], precision: 2) %></td>
+            <td><%= record[:season] %></td>
+            <td><%= record[:week] %></td>
+          </tr>
+        <% end %>
+        <% if @rivalries[:records][:closest_game] %>
+          <% record = @rivalries[:records][:closest_game] %>
+          <tr>
+            <td>Closest Game</td>
+            <td><%= record[:winner] %></td>
+            <td><%= record[:loser] %></td>
+            <td><%= number_with_precision(record[:margin], precision: 2) %></td>
+            <td><%= record[:season] %></td>
+            <td><%= record[:week] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="subtitle">Longest Streaks</div>
+    <table class="table is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Matchup</th>
+          <th>Winner</th>
+          <th>Loser</th>
+          <th>Streak</th>
+          <th>From</th>
+          <th>To</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @rivalries[:streaks].each do |streak| %>
+          <tr>
+            <td><%= streak[:pair] %></td>
+            <td><%= streak[:winner] %></td>
+            <td><%= streak[:loser] %></td>
+            <td><%= streak[:streak] %></td>
+            <td><%= streak[:from] %></td>
+            <td><%= streak[:to] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

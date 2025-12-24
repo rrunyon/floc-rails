@@ -1,0 +1,217 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <div class="level">
+      <div class="level-left">
+        <div>
+          <div class="title">Stats Overview</div>
+          <div class="tags">
+            <span class="tag is-link is-light">Season <%= @selected_season_label %></span>
+          </div>
+        </div>
+      </div>
+      <div class="level-right">
+        <%= form_with url: overview_stats_path, method: :get, local: true do %>
+          <div class="field is-grouped is-align-items-center">
+            <label class="label mr-2">Season</label>
+            <div class="control">
+              <div class="select">
+                <%= select_tag :season, options_for_select(@season_years, @season_filter), include_blank: "Latest", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="notification is-light">
+      Data is current through the <strong><%= @latest_season_label %></strong> season. Current season stats appear once the season ends.
+    </div>
+
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Standings (Top 5)</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Record</th>
+                <th>PF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @standings.empty? %>
+                <tr>
+                  <td colspan="3">No data available.</td>
+                </tr>
+              <% end %>
+              <% @standings.each do |row| %>
+                <tr>
+                  <td><%= row[:user] %></td>
+                  <td><%= row[:wins] %>-<%= row[:losses] %></td>
+                  <td><%= number_with_precision(row[:points_for], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Week Highlights (<%= @latest_week_label %>)</div>
+          <table class="table is-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Player</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @weekly_high.nil? && @weekly_low.nil? %>
+                <tr>
+                  <td colspan="3">No data available.</td>
+                </tr>
+              <% end %>
+              <% if @weekly_high %>
+                <tr>
+                  <td>High Score</td>
+                  <td><%= @weekly_high[:user] %></td>
+                  <td><%= number_with_precision(@weekly_high[:score], precision: 2) %></td>
+                </tr>
+              <% end %>
+              <% if @weekly_low %>
+                <tr>
+                  <td>Low Score</td>
+                  <td><%= @weekly_low[:user] %></td>
+                  <td><%= number_with_precision(@weekly_low[:score], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Points For Leaders</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Points For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @points_leaders.empty? %>
+                <tr>
+                  <td colspan="2">No data available.</td>
+                </tr>
+              <% end %>
+              <% @points_leaders.each do |row| %>
+                <tr>
+                  <td><%= row[:user] %></td>
+                  <td><%= number_with_precision(row[:points_for], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">All-Time Activity Leaders</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Total Moves</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @moves_leaders.empty? %>
+                <tr>
+                  <td colspan="2">No data available.</td>
+                </tr>
+              <% end %>
+              <% @moves_leaders.each do |row| %>
+                <tr>
+                  <td><%= row[:user] %></td>
+                  <td><%= row[:total] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Playoff Appearances (All-Time)</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Appearances</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @playoff_leaders.empty? %>
+                <tr>
+                  <td colspan="2">No data available.</td>
+                </tr>
+              <% end %>
+              <% @playoff_leaders.each do |row| %>
+                <tr>
+                  <td><%= row[:user] %></td>
+                  <td><%= row[:count] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Records Snapshot</div>
+          <table class="table is-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Winner</th>
+                <th>Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @records[:biggest_blowout] %>
+                <tr>
+                  <td>Biggest Blowout</td>
+                  <td><%= @records[:biggest_blowout][:winner] %></td>
+                  <td><%= number_with_precision(@records[:biggest_blowout][:margin], precision: 2) %></td>
+                </tr>
+              <% end %>
+              <% if @records[:closest_game] %>
+                <tr>
+                  <td>Closest Game</td>
+                  <td><%= @records[:closest_game][:winner] %></td>
+                  <td><%= number_with_precision(@records[:closest_game][:margin], precision: 2) %></td>
+                </tr>
+              <% end %>
+              <% if @records[:biggest_blowout].nil? && @records[:closest_game].nil? %>
+                <tr>
+                  <td colspan="3">No data available.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
