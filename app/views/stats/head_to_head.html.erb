@@ -4,6 +4,8 @@
   </div>
 
   <div class="column is-four-fifths">
+    <div class="title">Head to Head</div>
+    <div class="subtitle">All-time records by matchup, filtered by season type.</div>
     <div class="tabs is-toggle">
       <ul>
         <li class="<%= @season_filter == 'regular' ? 'is-active' : '' %>">
@@ -22,33 +24,35 @@
     </div>
 
     <% dataset = { "regular" => :regular_season, "playoffs" => :playoffs, "consolation" => :consolation, "all" => :mixed }[@season_filter] %>
-    <table class="table is-hoverable" data-controller="head-to-head-table" data-action="pointerover->head-to-head-table#hover pointerout->head-to-head-table#clear">
-      <thead>
-        <tr>
-          <th></th>
-          <% @sorted_users.each_with_index do |user, col_index| %>
-            <th data-col="<%= col_index %>"><%= user.short_name %></th>
-          <% end %>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @sorted_users.each_with_index do |user_b, row_index| %>
+    <div class="table-container">
+      <table class="table is-hoverable is-striped" data-controller="head-to-head-table" data-action="pointerover->head-to-head-table#hover pointerout->head-to-head-table#clear">
+        <thead>
           <tr>
-            <th data-row="<%= row_index %>"><%= user_b.short_name %></th>
-
-            <% @sorted_users.each_with_index do |user_a, col_index| %>
-              <td data-row="<%= row_index %>" data-col="<%= col_index %>">
-                <% if user_a != user_b %>
-                  <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :loss) || 0 %> - <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :win) || 0 %>
-                <% else %>
-                  --
-                <% end %>
-              </td>
+            <th></th>
+            <% @sorted_users.each_with_index do |user, col_index| %>
+              <th data-col="<%= col_index %>"><%= user.short_name %></th>
             <% end %>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          <% @sorted_users.each_with_index do |user_b, row_index| %>
+            <tr>
+              <th data-row="<%= row_index %>"><%= user_b.short_name %></th>
+
+              <% @sorted_users.each_with_index do |user_a, col_index| %>
+                <td data-row="<%= row_index %>" data-col="<%= col_index %>">
+                  <% if user_a != user_b %>
+                    <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :loss) || 0 %> - <%= @head_to_head.dig(dataset, user_b.name, user_a.name, :win) || 0 %>
+                  <% else %>
+                    --
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

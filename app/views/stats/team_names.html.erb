@@ -4,11 +4,14 @@
   </div>
 
   <div class="column is-four-fifths">
-    <% @team_names.sort.each_slice(3) do |slice| %>
-      <div class="columns">
-        <% slice.each do |team| %>
-          <div class="column is-one-third">
-            <table class="table">
+    <div class="title">Team Names</div>
+    <div class="subtitle">A timeline of each manager's team branding.</div>
+
+    <div class="columns is-multiline">
+      <% @team_names.sort.each do |team| %>
+        <div class="column is-one-third">
+          <div class="box">
+            <table class="table is-striped is-hoverable">
               <thead>
                 <tr>
                   <th>Season</th>
@@ -19,19 +22,15 @@
               <tbody>
                 <% team[1].each do |season, name| %>
                   <tr>
-                    <td>
-                      <%= season %>
-                    </td>
-                    <td>
-                      <%= name %>
-                    </td>
+                    <td><%= season %></td>
+                    <td><%= name %></td>
                   </tr>
                 <% end %>
               </tbody>
             </table>
           </div>
-        <% end %>
-      </div>
-    <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

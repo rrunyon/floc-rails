@@ -64,10 +64,6 @@ class StatsController < ApplicationController
     @sorted_users = User.all.sort_by(&:name)
   end
 
-  def recaps
-    @recaps = Stats::Recaps.compute
-  end
-
   def team_names
     @team_names = Stats::TeamNames.compute
   end

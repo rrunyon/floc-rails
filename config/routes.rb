@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     collection do
       get :overview
       get :head_to_head
-      get :recaps
       get :team_names
       get :high_low_scores
       get :season_trends
