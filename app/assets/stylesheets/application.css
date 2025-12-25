@@ -265,6 +265,22 @@ fieldset[disabled] .pagination-ellipsis {
   color: #363636;
 }
 
+.table td.is-selected,
+.table th.is-selected,
+.table tr.is-selected td,
+.table tr.is-selected th {
+  background-color: #f3f4f5 !important;
+  background-image: linear-gradient(180deg, #f7f8f9 0%, #eef0f2 100%) !important;
+  color: #000000 !important;
+}
+
+.table td.is-selected-cell,
+.table th.is-selected-cell {
+  background-color: #e2e5e8 !important;
+  background-image: linear-gradient(180deg, #e8ebee 0%, #d9dde1 100%) !important;
+  color: #000000 !important;
+}
+
 .brand-mark {
   display: flex;
   align-items: center;
