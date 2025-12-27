@@ -35,3 +35,6 @@
 /config/master.key
 
 .irb_history
+
+error.log
+api-response.json

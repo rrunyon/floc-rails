@@ -33,3 +33,6 @@
 ## Configuration & Secrets
 - Use `config/credentials.yml.enc` for secrets; avoid committing `.env` or raw keys.
 - Storage adapters are configured in `config/storage.yml`; update credentials via `bin/rails credentials:edit`.
+
+## Agent Guidelines
+- Do not make assumptions, ask clarifying questions if the task is ambiguous or there is potential to hone the prompt
