@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get :season_trends
       get :rivalries
       get :transactions
+      get :game_drama
     end
   end
 end
