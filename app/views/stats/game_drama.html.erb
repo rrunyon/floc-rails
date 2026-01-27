@@ -1,0 +1,117 @@
+<div class="columns">
+  <div class="column">
+    <%= render "sidebar" %>
+  </div>
+
+  <div class="column is-four-fifths">
+    <div class="level">
+      <div class="level-left">
+        <div>
+          <div class="title">Game Drama Dashboard</div>
+          <div class="subtitle">Where the league turned into a thriller (or a rout)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification is-light">
+      <strong><%= @game_drama[:games_count] %></strong> total games tracked. Nail-biters are decided by
+      <strong><%= @game_drama[:close_threshold] %></strong> points or fewer, while blowouts are
+      <strong><%= @game_drama[:blowout_threshold] %></strong> points or more.
+    </div>
+
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Nail-biters (<%= @game_drama[:close_games_count] %> total)</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Winner</th>
+                <th>Loser</th>
+                <th>Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @game_drama[:nail_biters].empty? %>
+                <tr>
+                  <td colspan="4">No close games recorded.</td>
+                </tr>
+              <% end %>
+              <% @game_drama[:nail_biters].each do |game| %>
+                <tr>
+                  <td><%= game[:season] %> W<%= game[:week] %></td>
+                  <td><%= game[:winner] %> (<%= number_with_precision(game[:winner_score], precision: 2) %>)</td>
+                  <td><%= game[:loser] %> (<%= number_with_precision(game[:loser_score], precision: 2) %>)</td>
+                  <td><%= number_with_precision(game[:margin], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="subtitle">Biggest Blowouts (<%= @game_drama[:blowout_games_count] %> total)</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Winner</th>
+                <th>Loser</th>
+                <th>Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @game_drama[:blowouts].empty? %>
+                <tr>
+                  <td colspan="4">No blowouts recorded.</td>
+                </tr>
+              <% end %>
+              <% @game_drama[:blowouts].each do |game| %>
+                <tr>
+                  <td><%= game[:season] %> W<%= game[:week] %></td>
+                  <td><%= game[:winner] %> (<%= number_with_precision(game[:winner_score], precision: 2) %>)</td>
+                  <td><%= game[:loser] %> (<%= number_with_precision(game[:loser_score], precision: 2) %>)</td>
+                  <td><%= number_with_precision(game[:margin], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-full">
+        <div class="box">
+          <div class="subtitle">Drama Leaders</div>
+          <table class="table is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Close Games</th>
+                <th>Blowout Games</th>
+                <th>Average Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @game_drama[:drama_leaders].empty? %>
+                <tr>
+                  <td colspan="4">No player data available.</td>
+                </tr>
+              <% end %>
+              <% @game_drama[:drama_leaders].each do |row| %>
+                <tr>
+                  <td><%= row[:user] %></td>
+                  <td><%= row[:close_games] %></td>
+                  <td><%= row[:blowout_games] %></td>
+                  <td><%= number_with_precision(row[:average_margin], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -109,6 +109,10 @@ class StatsController < ApplicationController
     @transactions_max_avg_per_game = @transactions[:season_averages].values.map { |avg| avg[:per_game] }.max.to_f
   end
 
+  def game_drama
+    @game_drama = Stats::GameDrama.compute
+  end
+
   private
 
   def max_for(trends, field)
